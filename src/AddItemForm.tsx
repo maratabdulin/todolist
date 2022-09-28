@@ -1,12 +1,12 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
-import {Button, IconButton, TextField} from '@mui/material';
+import {IconButton, TextField} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
 
 type PropsType = {
     addItem: (title: string) => void
 }
 
-const AddItemForm:FC<PropsType> = (props) => {
+const AddItemForm:FC<PropsType> = React.memo((props) => {
     const [title, setTitle] = useState('');
     const [error, setError] = useState(false);
 
@@ -22,7 +22,9 @@ const AddItemForm:FC<PropsType> = (props) => {
         setTitle(e.currentTarget.value)
     }
     const onPressEnterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(false)
+        if (error !== null) {
+            setError(false)
+        }
         if (e.key === 'Enter') {
             props.addItem(title);
         }
@@ -47,6 +49,6 @@ const AddItemForm:FC<PropsType> = (props) => {
             </IconButton>
         </div>
     );
-};
+})
 
 export default AddItemForm;

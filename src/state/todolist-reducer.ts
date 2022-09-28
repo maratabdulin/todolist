@@ -15,7 +15,9 @@ export type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitl
 
 type ActionType = DeleteTodolistActionType | ChangeTodolistFilterActionType | AddTodolistActionType | ChangeTodolistTitleActionType
 
-export const todolistReducer = (state: Array<TodolistType>, action: ActionType) => {
+const initialState:Array<TodolistType> = []
+
+export const todolistReducer = (state: Array<TodolistType> = initialState, action: ActionType) => {
     switch (action.type) {
         case 'REMOVE_TODOLIST':
             return state.filter(todolist => todolist.id !== action.payload.todolistId);

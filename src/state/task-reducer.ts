@@ -24,13 +24,15 @@ type ActionType =
     | AddTodolistActionType
     | DeleteTodolistActionType
 
-export const taskReducer = (state: TaskStateType, action: ActionType) => {
+const initialState: TaskStateType = {}
+
+export const taskReducer = (state: TaskStateType = initialState, action: ActionType) => {
     switch (action.type) {
         case 'ADD_TASK':
             return {
                 ...state,
                 [action.payload.todolistId]: [...state[action.payload.todolistId], {
-                    id: action.payload.todolistId,
+                    id: v1(),
                     title: action.payload.newTaskTitle,
                     isDone: false
                 }]
