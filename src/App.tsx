@@ -3,14 +3,14 @@ import Todolist from './Todolist';
 import AddItemForm from './AddItemForm';
 import {Header} from './Header';
 import {Container, Grid, Paper} from '@mui/material';
-import {addTodolistAC, TodolistType} from './state/todolist-reducer';
+import {addTodolistAC, TodolistDomainType} from './state/todolist-reducer';
 import {TaskStateType} from './state/task-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 
 
 const App = () => {
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists);
+    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
     const dispatch = useDispatch();
 

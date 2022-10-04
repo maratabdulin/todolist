@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {taskAPI} from '../api/task-api';
+import {todolistAPI} from '../api/todolist-api';
 
 export default {
     title: 'API/Tasks'
@@ -10,7 +10,7 @@ export const GetTasks = () => {
     const [todolistId, setTodolistId] = useState<string>('')
 
     const getTasks = () => {
-        taskAPI.getTasks(todolistId)
+        todolistAPI.getTasks(todolistId)
             .then((res) => setState(res.data))
     }
 
@@ -30,7 +30,7 @@ export const CreateTask = () => {
     const [taskTitle, setTaskTitle] = useState<string>('')
 
     const createTask = () => {
-        taskAPI.createTask(todolistId, taskTitle)
+        todolistAPI.createTask(todolistId, taskTitle)
             .then((res) => setState(res.data))
     }
 
@@ -51,7 +51,7 @@ export const DeleteTask = () => {
     const [taskId, setTaskId] = useState<string>('')
 
     const deleteTask = () => {
-        taskAPI.deleteTask(todolistId, taskId)
+        todolistAPI.deleteTask(todolistId, taskId)
             .then((res) => setState(res.data))
     }
     return (
@@ -81,7 +81,7 @@ export const UpdateTask = () => {
     const [addedDate, setAddedDate] = useState<string>('');
 
     const updateTask = () => {
-        taskAPI.updateTask(todolistId, taskId, {
+        todolistAPI.updateTask(todolistId, taskId, {
             description,
             title,
             completed,

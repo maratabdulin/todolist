@@ -3,10 +3,11 @@ import AddItemForm from './AddItemForm';
 import EditableSpan from './EditableSpan';
 import {Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {addTaskAC, TaskType} from './state/task-reducer';
+import {addTaskAC} from './state/task-reducer';
 import {changeTodolistFilterAC, changeTodolistTitleAC, deleteTodolistAC, FilterType} from './state/todolist-reducer';
 import Task from './Task';
 import {useDispatch} from 'react-redux';
+import {TaskStatuses, TaskType} from './api/todolist-api';
 
 type TodolistPropsType = {
     todolistId: string
@@ -44,11 +45,11 @@ const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, f
     let tasksForTodolist = tasks;
 
     if (filter === 'active') {
-        tasksForTodolist = tasks.filter(task => !task.isDone);
+        tasksForTodolist = tasks.filter(task => task.status === TaskStatuses.New);
     }
 
     if (filter === 'completed') {
-        tasksForTodolist = tasks.filter(task => task.isDone);
+        tasksForTodolist = tasks.filter(task => task.status === TaskStatuses.Completed);
     }
 
     return (
@@ -66,7 +67,7 @@ const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, f
                         <Task
                             key={task.id}
                             id={task.id}
-                            isDone={task.isDone}
+                            status={task.status}
                             title={task.title}
                             todolistId={todolistId}
                         />
