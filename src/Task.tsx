@@ -2,9 +2,9 @@ import React, {ChangeEvent, FC, useCallback} from 'react';
 import {Checkbox, IconButton} from '@mui/material';
 import EditableSpan from './EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC} from './state/task-reducer';
-import {useDispatch} from 'react-redux';
+import {changeTaskTC, deleteTaskTC} from './state/task-reducer';
 import {TaskStatuses} from './api/todolist-api';
+import {useAppDispatch} from './state/hooks';
 
 type TaskPropsType = {
     id: string
@@ -15,15 +15,17 @@ type TaskPropsType = {
 
 const Task: FC<TaskPropsType> = ({id, status, title, todolistId}) => {
 
-        const dispatch = useDispatch();
+        const dispatch = useAppDispatch();
 
         const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-            let newIsDoneValue = e.currentTarget.checked
-            dispatch(changeTaskStatusAC(todolistId, id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New))
+            let status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
+            dispatch(changeTaskTC(todolistId, id, {status} ))
         }, [dispatch, todolistId, id])
 
-        const changeTaskTitle = useCallback((title: string) => dispatch(changeTaskTitleAC(todolistId, id, title)), [dispatch, todolistId, id])
-        const removeTask = useCallback(() => dispatch(deleteTaskAC(todolistId, id)), [dispatch, todolistId, id])
+        const changeTaskTitle = useCallback((title: string) =>
+            dispatch(changeTaskTC(todolistId, id, {title})), [dispatch, todolistId, id])
+
+        const deleteTask = useCallback(() => dispatch(deleteTaskTC(todolistId, id)), [dispatch, todolistId, id])
 
         return (
             <li key={id} className={status === TaskStatuses.Completed ? 'is-done' : ''}>
@@ -33,7 +35,7 @@ const Task: FC<TaskPropsType> = ({id, status, title, todolistId}) => {
                     color="primary"
                 />
                 <EditableSpan value={title} onChange={changeTaskTitle}/>
-                <IconButton onClick={removeTask}>
+                <IconButton onClick={deleteTask}>
                     <DeleteIcon fontSize="small"/>
                 </IconButton>
             </li>

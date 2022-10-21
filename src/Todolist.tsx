@@ -1,13 +1,13 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 import AddItemForm from './AddItemForm';
 import EditableSpan from './EditableSpan';
 import {Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {addTaskAC} from './state/task-reducer';
+import {addTaskTC, setTasksTC} from './state/task-reducer';
 import {changeTodolistFilterAC, changeTodolistTitleAC, deleteTodolistAC, FilterType} from './state/todolist-reducer';
 import Task from './Task';
-import {useDispatch} from 'react-redux';
 import {TaskStatuses, TaskType} from './api/todolist-api';
+import {useAppDispatch} from './state/hooks';
 
 type TodolistPropsType = {
     todolistId: string
@@ -18,9 +18,13 @@ type TodolistPropsType = {
 
 const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, filter}) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const addTask = (title: string) => { dispatch(addTaskAC(todolistId, title)) }
+    useEffect(() => {
+        dispatch(setTasksTC(todolistId))
+    }, [])
+
+    const addTask = (title: string) => { dispatch(addTaskTC(todolistId, title)) }
 
     const changeFilterAll = useCallback(() => {
         dispatch(changeTodolistFilterAC(todolistId, 'all'));
