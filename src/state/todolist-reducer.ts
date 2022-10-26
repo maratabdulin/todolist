@@ -1,4 +1,3 @@
-import {v1} from 'uuid';
 import {todolistAPI, TodolistType} from '../api/todolist-api';
 import {AppThunk} from './store';
 import {AxiosResponse} from 'axios';
@@ -7,14 +6,6 @@ export type FilterType = 'all' | 'active' | 'completed';
 
 export type TodolistDomainType = TodolistType & {
     filter: FilterType
-}
-
-export type TodolistModelType = {
-    id?: string
-    addedDate?: string
-    order?: number
-    title?: string
-    filter?: FilterType
 }
 
 export type DeleteTodolistActionType = ReturnType<typeof deleteTodolistAC>
