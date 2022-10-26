@@ -4,7 +4,12 @@ import EditableSpan from './EditableSpan';
 import {Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {addTaskTC, setTasksTC} from './state/task-reducer';
-import {changeTodolistFilterAC, changeTodolistTitleAC, deleteTodolistAC, FilterType} from './state/todolist-reducer';
+import {
+    changeTodolistFilterAC,
+    changeTodolistTitleTC,
+    deleteTodolistTC,
+    FilterType
+} from './state/todolist-reducer';
 import Task from './Task';
 import {TaskStatuses, TaskType} from './api/todolist-api';
 import {useAppDispatch} from './state/hooks';
@@ -39,11 +44,11 @@ const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, f
     }, [dispatch, todolistId]);
 
     const removeTodolist = useCallback(() => {
-        dispatch(deleteTodolistAC(todolistId))
+        dispatch(deleteTodolistTC(todolistId))
     }, [dispatch, todolistId])
 
     const changeTodolistTitle = useCallback(( title: string) => {
-        dispatch(changeTodolistTitleAC(todolistId, title))
+        dispatch(changeTodolistTitleTC(todolistId, title))
     }, [dispatch, todolistId])
 
     let tasksForTodolist = tasks;

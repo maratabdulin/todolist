@@ -3,7 +3,7 @@ import Todolist from './Todolist';
 import AddItemForm from './AddItemForm';
 import {Header} from './Header';
 import {Container, Grid, Paper} from '@mui/material';
-import {addTodolistAC, setTodolistTC, TodolistDomainType} from './state/todolist-reducer';
+import {addTodolistTC, setTodolistTC, TodolistDomainType} from './state/todolist-reducer';
 import {useAppDispatch, useAppSelector} from './state/hooks';
 
 
@@ -18,7 +18,7 @@ const App = () => {
     }, []);
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title));
+        dispatch(addTodolistTC(title));
     }, [dispatch])
 
     return (

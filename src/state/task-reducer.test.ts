@@ -5,7 +5,7 @@ import {
     TaskStateType
 } from './task-reducer';
 import {addTodolistAC, deleteTodolistAC} from './todolist-reducer';
-import {TaskPriorities, TaskStatuses} from '../api/todolist-api';
+import {TaskPriorities, TaskStatuses, TodolistType} from '../api/todolist-api';
 
 let startState: TaskStateType
 
@@ -138,8 +138,13 @@ test('correct task from correct todolist should change status', () => {
 })
 
 test('new array should be added when new todolist is added', () => {
-    const newTodolistTitle = 'New todolist'
-    const endState = taskReducer(startState, addTodolistAC(newTodolistTitle))
+    const newTodolist: TodolistType = {
+        title: 'New todolist',
+        order: 1,
+        addedDate: 'newDate',
+        id: '10'
+    }
+    const endState = taskReducer(startState, addTodolistAC(newTodolist))
     const keys = Object.keys(endState)
     const newKey = keys.find(k => k !== 'todolistId1' && k !== 'todolistId2')
     if (!newKey) {
