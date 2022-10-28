@@ -3,7 +3,7 @@ import AddItemForm from './AddItemForm';
 import EditableSpan from './EditableSpan';
 import {Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {addTaskTC, fetchTasksTC} from '../state/task-reducer';
+import {addTaskTC, fetchTasksTC, TaskDomainType} from '../state/task-reducer';
 import {
     changeTodolistFilterAC,
     changeTodolistTitleTC,
@@ -11,14 +11,14 @@ import {
     FilterType
 } from '../state/todolist-reducer';
 import Task from './Task';
-import {TaskStatuses, TaskType} from '../api/todolist-api';
+import {TaskStatuses} from '../api/todolist-api';
 import {useAppDispatch} from '../state/hooks';
 import {RequestStatusType} from '../app/app-reducer';
 
 type TodolistPropsType = {
     todolistId: string
     title: string
-    tasks: Array<TaskType>
+    tasks: Array<TaskDomainType>
     filter: FilterType
     entityStatus: RequestStatusType
 }
@@ -66,7 +66,7 @@ const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, f
     return (
         <div>
             <h3>
-                <EditableSpan value={title} onChange={changeTodolistTitle}/>
+                <EditableSpan value={title} onChange={changeTodolistTitle} disabled={entityStatus === 'loading'}/>
                 <IconButton onClick={removeTodolist} disabled={entityStatus === 'loading'}>
                     <DeleteIcon/>
                 </IconButton>
@@ -82,6 +82,7 @@ const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, f
                             status={task.status}
                             title={task.title}
                             todolistId={todolistId}
+                            taskEntityStatus={task.taskEntityStatus}
                         />
                     )
                 })}

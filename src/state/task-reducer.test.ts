@@ -23,7 +23,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                taskEntityStatus: 'idle'
             },
             {
                 id: '2',
@@ -36,7 +37,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                taskEntityStatus: 'idle'
             },
             {
                 id: '3',
@@ -49,7 +51,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                taskEntityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -64,7 +67,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                taskEntityStatus: 'idle'
             },
             {
                 id: '2',
@@ -77,7 +81,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                taskEntityStatus: 'idle'
             },
             {
                 id: '3',
@@ -90,7 +95,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                taskEntityStatus: 'idle'
             },
         ]
     }

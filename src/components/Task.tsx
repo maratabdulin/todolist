@@ -13,9 +13,10 @@ type TaskPropsType = {
     title: string
     todolistId: string
     todolistEntityStatus: RequestStatusType
+    taskEntityStatus: RequestStatusType
 }
 
-const Task: FC<TaskPropsType> = ({id, status, title, todolistId, todolistEntityStatus}) => {
+const Task: FC<TaskPropsType> = ({id, status, title, todolistId, todolistEntityStatus, taskEntityStatus}) => {
 
         const dispatch = useAppDispatch();
 
@@ -32,12 +33,13 @@ const Task: FC<TaskPropsType> = ({id, status, title, todolistId, todolistEntityS
         return (
             <li key={id} className={status === TaskStatuses.Completed ? 'is-done' : ''}>
                 <Checkbox
+                    disabled={taskEntityStatus === 'loading'}
                     checked={status === TaskStatuses.Completed}
                     onChange={changeTaskStatus}
                     color="primary"
                 />
-                <EditableSpan value={title} onChange={changeTaskTitle}/>
-                <IconButton onClick={deleteTask} disabled={todolistEntityStatus === 'loading'}>
+                <EditableSpan value={title} onChange={changeTaskTitle} disabled={taskEntityStatus === 'loading'}/>
+                <IconButton onClick={deleteTask} disabled={taskEntityStatus === 'loading' || todolistEntityStatus === 'loading'}>
                     <DeleteIcon fontSize="small"/>
                 </IconButton>
             </li>
