@@ -2,18 +2,20 @@ import React, {ChangeEvent, FC, useCallback} from 'react';
 import {Checkbox, IconButton} from '@mui/material';
 import EditableSpan from './EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {changeTaskTC, deleteTaskTC} from './state/task-reducer';
-import {TaskStatuses} from './api/todolist-api';
-import {useAppDispatch} from './state/hooks';
+import {changeTaskTC, deleteTaskTC} from '../state/task-reducer';
+import {TaskStatuses} from '../api/todolist-api';
+import {useAppDispatch} from '../state/hooks';
+import {RequestStatusType} from '../app/app-reducer';
 
 type TaskPropsType = {
     id: string
     status: TaskStatuses
     title: string
     todolistId: string
+    todolistEntityStatus: RequestStatusType
 }
 
-const Task: FC<TaskPropsType> = ({id, status, title, todolistId}) => {
+const Task: FC<TaskPropsType> = ({id, status, title, todolistId, todolistEntityStatus}) => {
 
         const dispatch = useAppDispatch();
 
@@ -35,7 +37,7 @@ const Task: FC<TaskPropsType> = ({id, status, title, todolistId}) => {
                     color="primary"
                 />
                 <EditableSpan value={title} onChange={changeTaskTitle}/>
-                <IconButton onClick={deleteTask}>
+                <IconButton onClick={deleteTask} disabled={todolistEntityStatus === 'loading'}>
                     <DeleteIcon fontSize="small"/>
                 </IconButton>
             </li>

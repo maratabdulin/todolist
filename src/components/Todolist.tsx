@@ -3,30 +3,32 @@ import AddItemForm from './AddItemForm';
 import EditableSpan from './EditableSpan';
 import {Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {addTaskTC, setTasksTC} from './state/task-reducer';
+import {addTaskTC, fetchTasksTC} from '../state/task-reducer';
 import {
     changeTodolistFilterAC,
     changeTodolistTitleTC,
     deleteTodolistTC,
     FilterType
-} from './state/todolist-reducer';
+} from '../state/todolist-reducer';
 import Task from './Task';
-import {TaskStatuses, TaskType} from './api/todolist-api';
-import {useAppDispatch} from './state/hooks';
+import {TaskStatuses, TaskType} from '../api/todolist-api';
+import {useAppDispatch} from '../state/hooks';
+import {RequestStatusType} from '../app/app-reducer';
 
 type TodolistPropsType = {
     todolistId: string
     title: string
     tasks: Array<TaskType>
     filter: FilterType
+    entityStatus: RequestStatusType
 }
 
-const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, filter}) => {
+const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, filter, entityStatus}) => {
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(setTasksTC(todolistId))
+        dispatch(fetchTasksTC(todolistId))
     }, [])
 
     const addTask = (title: string) => { dispatch(addTaskTC(todolistId, title)) }
@@ -65,15 +67,16 @@ const Todolist: FC<TodolistPropsType> = React.memo(({todolistId, title, tasks, f
         <div>
             <h3>
                 <EditableSpan value={title} onChange={changeTodolistTitle}/>
-                <IconButton onClick={removeTodolist}>
+                <IconButton onClick={removeTodolist} disabled={entityStatus === 'loading'}>
                     <DeleteIcon/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={addTask} disabled={entityStatus === 'loading'}/>
             <ul>
                 {tasksForTodolist.map((task) => {
                     return (
                         <Task
+                            todolistEntityStatus={entityStatus}
                             key={task.id}
                             id={task.id}
                             status={task.status}
