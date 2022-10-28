@@ -207,6 +207,8 @@ export const deleteTaskTC = (todolistId: string, taskId: string): AppThunk => di
         }
     }).catch((e: AxiosError) => {
         handleServerNetworkError(e, dispatch)
+    }).finally(() => {
+        dispatch(setTaskEntityStatusAC(todolistId, taskId, 'idle'))
     })
 }
 
@@ -221,11 +223,12 @@ export const changeTaskTC = (todolistId: string, taskId: string, taskModel: Task
         if (res.data.resultCode === 0) {
             dispatch(changeTaskAC(todolistId, taskId, res.data.data.item))
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(setTaskEntityStatusAC(todolistId, taskId, 'succeeded'))
         } else {
             handleServerAppError(res.data, dispatch)
         }
     }).catch((e: AxiosError) => {
         handleServerNetworkError(e, dispatch)
+    }).finally(() => {
+        dispatch(setTaskEntityStatusAC(todolistId, taskId, 'idle'))
     })
 }

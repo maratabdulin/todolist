@@ -135,6 +135,8 @@ export const deleteTodolistTC = (todolistId: string): AppThunk => dispatch => {
         }
     }).catch((e: AxiosError) => {
         handleServerNetworkError(e, dispatch)
+    }).finally(() => {
+        dispatch(setTodolistEntityStatusAC(todolistId, 'idle'))
     })
 }
 
@@ -154,6 +156,7 @@ export const addTodolistTC = (todolistTitle: string): AppThunk => dispatch => {
 
 export const changeTodolistTitleTC = (todolistId: string, newTitle: string): AppThunk => dispatch => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(setTodolistEntityStatusAC(todolistId, 'loading'))
     todolistAPI.updateTodolist(todolistId, newTitle).then((res: AxiosResponse) => {
         if (res.data.resultCode === 0) {
             dispatch(changeTodolistTitleAC(todolistId, newTitle))
@@ -163,6 +166,8 @@ export const changeTodolistTitleTC = (todolistId: string, newTitle: string): App
         }
     }).catch((e: AxiosError) => {
         handleServerNetworkError(e, dispatch)
+    }).finally(() => {
+        dispatch(setTodolistEntityStatusAC(todolistId, 'idle'))
     })
 }
 
