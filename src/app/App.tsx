@@ -1,59 +1,42 @@
-import React, {useCallback, useEffect} from 'react';
-import Todolist from '../components/Todolist';
-import AddItemForm from '../components/AddItemForm';
+import React, {useEffect} from 'react';
 import {Header} from '../components/Header';
-import {addTodolistTC, fetchTodolistTC, TodolistDomainType} from '../state/todolist-reducer';
-import {useAppDispatch, useAppSelector} from '../state/hooks';
-import LinearProgress from '@mui/material/LinearProgress';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import {ErrorSnackbar} from '../components/ErrorSnackbar';
-
+import TodolistsList from '../components/TodolistsList';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import Login from '../components/Login/Login';
+import {useAppDispatch, useAppSelector} from '../state/hooks';
+import {initializeAppTC} from '../components/Login/auth-reducer';
+import {CircularProgress} from '@mui/material';
 
 const App = () => {
-
-    const todolists = useAppSelector<TodolistDomainType[]>(state => state.todolists);
-    const tasks = useAppSelector(state => state.tasks);
-    const status = useAppSelector(state => state.app.status);
     const dispatch = useAppDispatch();
+    const isInitialized = useAppSelector(state=>state.app.isInitialized)
 
     useEffect(() => {
-        dispatch(fetchTodolistTC())
-    }, []);
+        dispatch(initializeAppTC())
+    }, [])
 
-    const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistTC(title));
-    }, [dispatch])
+if (!isInitialized) {
+    return <div
+        style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+        <CircularProgress/>
+    </div>
+}
 
     return (
-        <div>
+        <BrowserRouter>
             <ErrorSnackbar/>
             <Header/>
-            {status === 'loading' && <LinearProgress/>}
             <Container fixed>
-                <Grid container style={{padding: '20px'}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
-                <Grid container spacing={3}>
-                    {todolists.map(todolist => {
-                        return (
-                            <Grid item key={todolist.id}>
-                                <Paper style={{padding: '10px'}}>
-                                    <Todolist
-                                        tasks={tasks[todolist.id]}
-                                        entityStatus={todolist.entityStatus}
-                                        todolistId={todolist.id}
-                                        title={todolist.title}
-                                        filter={todolist.filter}
-                                    />
-                                </Paper>
-                            </Grid>
-                        )
-                    })}
-                </Grid>
+                <Routes>
+                    <Route path={'/'} element={<TodolistsList/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path={'/404'} element={<h1>Page Not Found</h1>}/>
+                    <Route path={'*'} element={<Navigate to='/404'/>}/>
+                </Routes>
             </Container>
-        </div>
+        </BrowserRouter>
     )
 }
 

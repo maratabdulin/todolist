@@ -3,13 +3,16 @@ export type RequestErrorType = string | null
 
 const initialState = {
     status: 'loading' as RequestStatusType,
-    error: null as RequestErrorType
+    error: null as RequestErrorType,
+    isInitialized: false as boolean
 }
 export type AppStatusStateType = typeof initialState
 
 type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
-export type AppStatusActionTypes = SetAppStatusActionType | SetAppErrorActionType
+type SetIsInitializedActionType = ReturnType<typeof setIsInitializedAC>
+
+export type AppStatusActionTypes = SetAppStatusActionType | SetAppErrorActionType | SetIsInitializedActionType
 
 export const appReducer = (state: AppStatusStateType = initialState, action: AppStatusActionTypes): AppStatusStateType => {
     switch (action.type) {
@@ -17,6 +20,8 @@ export const appReducer = (state: AppStatusStateType = initialState, action: App
             return {...state, status: action.payload.status}
         case 'APP/SET-ERROR':
             return {...state, error: action.payload.error}
+        case 'APP/SET-INITIALIZED':
+            return {...state, isInitialized: action.payload.isInitialized}
         default:
             return state
     }
@@ -33,5 +38,12 @@ export const setAppErrorAC = (error: RequestErrorType) => {
     return {
         type: 'APP/SET-ERROR',
         payload: {error}
+    } as const
+}
+
+export const setIsInitializedAC = (isInitialized: boolean) => {
+    return {
+        type: 'APP/SET-INITIALIZED',
+        payload: {isInitialized}
     } as const
 }
